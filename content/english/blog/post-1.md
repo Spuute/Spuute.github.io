@@ -7,7 +7,7 @@ image: "/images/image-placeholder.png"
 categories: [".NET", "Development"]
 author: "Patric Bergkvist"
 tags: ["Architecture"]
-draft: false
+draft: true
 ---
 
 ## Testtitel

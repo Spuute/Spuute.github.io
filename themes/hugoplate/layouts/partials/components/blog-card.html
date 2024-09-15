@@ -30,7 +30,7 @@
       </li>
     </ul>
   {{ end }}
-  <p class="mb-6">{{ .Summary }}</p>
+  <p class="mb-6">{{ .Content | strings.Truncate 42 }}</p>
   <a class="btn btn-outline-primary btn-sm mt-4" href="{{ .RelPermalink }}">
     {{ T "read_more" }}
   </a>
