@@ -16,6 +16,10 @@ Börjar med ett första testinlägg för att se lite hur det kommer att kunna se
 ```csharp
 if (something.something is not null)
 {
-    //Some code goes here.
+    var a = "Some random string";
+    
+    if (string.IsNullOrEmpty(a)){
+        throw new ArgumentNullException();
+    }
 }
 ```
