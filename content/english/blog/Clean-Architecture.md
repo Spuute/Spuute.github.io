@@ -1,16 +1,16 @@
 ---
-title: "Implementera Clean Architecture i .NET"
+title: "Vad är Clean Architecture?"
 meta_title: ""
-description: "How to implement Clean Architecture in .NET"
+description: "Vad är Clean Architecture?"
 date: 2024-09-15
 image: "/images/image-placeholder.png"
-categories: [".NET", "Development", "Architecture"]
+categories: ["Architecture"]
 author: "Patric Bergkvist"
 tags: ["Architecture"]
 draft: false
 ---
 
-### Vad händer när ditt system växer snabbt och koden börjar bli oöverskådlig?
+Vad händer när ditt system växer snabbt och koden börjar bli oöverskådlig?
 
 Applikationer som utvecklas snabbt kan snabbt bli röriga, svåra att underhålla och fulla av beroenden som är svåra att förstå eller förändra. Det är här Clean Architecture kommer in i bilden. Clean Architecture är mer än bara en uppsättning regler – det är ett sätt att tänka kring systemdesign som hjälper dig att skapa skalbara, testbara och lättunderhållna applikationer. Genom att separera ansvar och hålla din kodbas strukturerad, kan du enklare bygga system som står emot tidens tand.
 
@@ -18,9 +18,9 @@ I det här inlägget kommer vi att utforska principerna bakom Clean Architecture
 
 ### Vad är då det här Clean Architecture?
 
-Clean architecture introducerades av ingen mindre än Uncle Bob (Robert C. Martin), och det är ett sätt att strukturera arkitekturen för mjukvaran du bygger så den blir mer robust och flexibel. Tanken är att separera ansvar och minska beroenden mellan de olika delarna av systemet som exempelvis databas och affärslokig. Målet är att man skapar en arkitektur där affärslokig och komponenter kan förändras, eller till och med bytas ut utan att det ska behöva påverka hela systemet.
+Clean Architecture introducerades av ingen mindre än Uncle Bob (Robert C. Martin), och det är ett sätt att strukturera arkitekturen för mjukvaran du bygger så den blir mer robust och flexibel. Tanken är att separera ansvar och minska beroenden mellan de olika delarna av systemet som exempelvis databas och affärslogik. Målet är att man skapar en arkitektur där affärslogik och komponenter kan förändras, eller till och med bytas ut utan att det ska behöva påverka hela systemet.
 
-### Principerna bakom Clean architecture
+### Principerna bakom Clean Architecture
 
 #### Separation av ansvar
 En av de absolut viktigaste elementen i Clean Architecture är separation av ansvar mellan olika lager (mer om lagren längre ner). Varje lager i systemet har ett specifikt syfte och är inte beroende av något annat lager i system för sin funktionalitet. Genom att göra detta så minskar kopplingarna mellan olika delar av systemet, vilket gör det lättare att utveckla, testa och underhålla.
@@ -52,6 +52,8 @@ Allting som rör tekniska beroenden placeras i detta lager, såsom databastransa
 #### Presentation
 
 Detta lager hanterar användargränssnittet och API. Ett typiskt exempel är ett web API som exponerar data till en front-end applikation eller en mobil app. Presentation-lagret interagerar med applikationslagret för att få tillgång till affärslogik och data.
+
+![Clean Architecture Diagram](../../../assets/images/clean-architecture-diagram.png)
 
 ### Exempel
 
@@ -119,3 +121,7 @@ Infrastructure lagret har implementationen för Entity frameork
 
 Skulle vi i detta exempel vilja byta ut entityframework mot något annat ORM så kan vi göra det utan att behöva skriva om koden i Domain eller Application lagret. 
 Det enda vi behöver göra är att skriva om koden i Infrastructure lagret. 
+
+### Sammanfattning
+
+Clean Architecture hjälper dig att bygga flexibla och underhållsbara applikationer som enkelt kan anpassas till nya krav. Genom att separera affärslogik från tekniska beroenden får du en struktur som är både testbar och robust mot förändringar i framtiden. Genom att använda de principer och lager som jag nämnt ovan, så kan du skapa skalbara och framtidssäkra system.
