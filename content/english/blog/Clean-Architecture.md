@@ -3,7 +3,7 @@ title: "Vad är Clean Architecture?"
 meta_title: ""
 description: "Vad är Clean Architecture?"
 date: 2024-09-15
-image: "/images/image-placeholder.png"
+image: "/images/clean-architecture-diagram"
 categories: ["Architecture"]
 author: "Patric Bergkvist"
 tags: ["Architecture"]
@@ -53,7 +53,7 @@ Allting som rör tekniska beroenden placeras i detta lager, såsom databastransa
 
 Detta lager hanterar användargränssnittet och API. Ett typiskt exempel är ett web API som exponerar data till en front-end applikation eller en mobil app. Presentation-lagret interagerar med applikationslagret för att få tillgång till affärslogik och data.
 
-![Clean Architecture Diagram](../../../assets/images/clean-architecture-diagram.png)
+![Clean Architecture Diagram](/images/clean-architecture-diagram.png)
 
 ### Exempel
 
