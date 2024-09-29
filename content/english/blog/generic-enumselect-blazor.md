@@ -148,18 +148,16 @@ public static string TranslateEnum(ProjectRole enumValue)
 }
 ```
 
-Nu är det dags att skapa en ny page för detta formulär, så vi skapar en ny page komponent i Pages foldern och namnger den AddEmployee.razor
-Denna komponent kommer innehålla vårt formulär, och det kommer att se ut så här:
+### Skapa formulär för att lägga till ny anställd
+Nu är det dags att skapa en ny sida för detta formulär. Vi börjar med att skapa en ny ***page***-komponent i Pages-mappen och namnge den AddEmployee.razor. Denna komponent kommer att innehålla vårt formulär för att registrera nya anställda. Formuläret kommer att se ut enligt följande:
 
 --SCREENSHOT--
 
 Och koden för den har vi här:
 
 ```csharp
-@page "/add-employee"
-@using System.ComponentModel.DataAnnotations
-@using BlazorPlaygroundWeb.Enums
-@using BlazorPlaygroundWeb.Models
+@page "/add-resource"
+
 <MudContainer>
     <MudPaper Elevation="4" Class="pa-4 my-4">
         <MudGrid>
@@ -173,7 +171,7 @@ Och koden för den har vi här:
                 </MudText>
             </MudItem>
             <MudItem sm="6" Class="p-4 mt-4">
-                <EditForm Spacing="6" Model="Employee" OnValidSubmit="OnValidSubmit">
+                <EditForm Spacing="6" Model="Employee">
                     <MudGrid>
                         <MudItem sm="6">
                             <MudTextField T="string" @bind-Value="Employee.FirstName" Label="Förnamn"/>
@@ -185,31 +183,31 @@ Och koden för den har vi här:
                     <MudSelect T="ProjectRole" @bind-Value="Employee.Role" Label="Ange roll" ToStringFunc="GetAllWithoutDefaultValue">
                         @foreach (var role in Enum.GetValues(typeof(ProjectRole)).Cast<ProjectRole>().Where(e => !e.Equals(default(ProjectRole))))
                         {
-                            <MudSelectItem Value="@role">@GetDisplayName(role)</MudSelectItem>
+                            <MudSelectItem Value="@role">@role</MudSelectItem>
                         }
                     </MudSelect>
                     <MudSelect T="Department" @bind-Value="Employee.Department" Label="Ange avdelning" ToStringFunc="GetAllWithoutDefaultValue">
                         @foreach (var department in Enum.GetValues(typeof(Department)).Cast<Department>().Where(e => !e.Equals(default(Department))))
                         {
-                            <MudSelectItem Value="@department">@GetDisplayName(department)</MudSelectItem>
+                            <MudSelectItem Value="@department">@department</MudSelectItem>
                         }
                     </MudSelect>
                     <MudSelect T="EmployeeStatus" @bind-Value="Employee.Status" Label="Ange status" ToStringFunc="GetAllWithoutDefaultValue">
                         @foreach (var status in Enum.GetValues(typeof(EmployeeStatus)).Cast<EmployeeStatus>().Where(e => !e.Equals(default(EmployeeStatus))))
                         {
-                            <MudSelectItem Value="@status">@GetDisplayName(status)</MudSelectItem>
+                            <MudSelectItem Value="@status">@status</MudSelectItem>
                         }
                     </MudSelect>
                     <MudSelect T="SeniorityLevel" @bind-Value="Employee.SeniorityLevel" Label="Ange senioritet" ToStringFunc="GetAllWithoutDefaultValue">
                         @foreach (var seniorityLevel in Enum.GetValues(typeof(SeniorityLevel)).Cast<SeniorityLevel>().Where(e => !e.Equals(default(SeniorityLevel))))
                         {
-                            <MudSelectItem Value="@seniorityLevel">@GetDisplayName(seniorityLevel)</MudSelectItem>
+                            <MudSelectItem Value="@seniorityLevel">@seniorityLevel</MudSelectItem>
                         }
                     </MudSelect>
                     <MudSelect T="Availability" @bind-Value="Employee.Availability" Label="Ange tillgänglighet" ToStringFunc="GetAllWithoutDefaultValue">
                         @foreach (var workload in Enum.GetValues(typeof(Availability)).Cast<Availability>().Where(e => !e.Equals(default(Availability))))
                         {
-                            <MudSelectItem Value="@workload">@GetDisplayName(workload)</MudSelectItem>
+                            <MudSelectItem Value="@workload">@workload</MudSelectItem>
                         }
                     </MudSelect>
                     <MudGrid>
@@ -225,42 +223,22 @@ Och koden för den har vi här:
 </MudContainer>
 
 @code {
+    private Employee Employee { get; set; } = new();
 
-    // private List<Employee1> _employees;
-    private Employee? Employee { get; set; } = new();
-    private bool _formIsValid;
+    private static string GetAllWithoutDefaultValue(ProjectRole enumValue)
+        => enumValue == 0 ? string.Empty : GetDisplayName(enumValue);
 
-    private void Test()
-    {
-        Console.WriteLine();
-    }
+    private static string GetAllWithoutDefaultValue(Department enumValue)
+        => enumValue == 0 ? string.Empty : GetDisplayName(enumValue);
 
-    protected override async Task OnInitializedAsync()
-    {
-        // _employees = EmployeeService.GetEmployees();
-        await base.OnInitializedAsync();
-    }
+    private static string GetAllWithoutDefaultValue(EmployeeStatus enumValue)
+        => enumValue == 0 ? string.Empty : GetDisplayName(enumValue);
 
-    private void OnValidSubmit(EditContext context)
-    {
-        _formIsValid = true;
-        StateHasChanged();
-    }
+    private static string GetAllWithoutDefaultValue(SeniorityLevel enumValue)
+        => enumValue == 0 ? string.Empty : GetDisplayName(enumValue);
 
-    private string GetAllWithoutDefaultValue(ProjectRole enumValue)
-        => Convert.ToInt32(enumValue) == 0 ? string.Empty : enumValue.ToString();
-
-    private string GetAllWithoutDefaultValue(Department enumValue)
-        => Convert.ToInt32(enumValue) == 0 ? string.Empty : enumValue.ToString();
-
-    private string GetAllWithoutDefaultValue(EmployeeStatus enumValue)
-        => Convert.ToInt32(enumValue) == 0 ? string.Empty : enumValue.ToString();
-
-    private string GetAllWithoutDefaultValue(SeniorityLevel enumValue)
-        => Convert.ToInt32(enumValue) == 0 ? string.Empty : enumValue.ToString();
-
-    private string GetAllWithoutDefaultValue(Availability enumValue)
-        => Convert.ToInt32(enumValue) == 0 ? string.Empty : enumValue.ToString();
+    private static string GetAllWithoutDefaultValue(Availability enumValue)
+        => enumValue == 0 ? string.Empty : GetDisplayName(enumValue);
 
     private static string GetDisplayName(ProjectRole enumValue)
     {
@@ -321,6 +299,9 @@ Och koden för den har vi här:
 
         return displayAttribute?.Name ?? enumValue.ToString();
     }
-
 }
+        
 ```
+I detta kodexempel används MudSelect-komponenter för att skapa dropdown-menyer som tillåter användaren att välja värden från de enum-typer vi definierat tidigare. För att förbättra användarupplevelsen och säkerställa att ogiltiga val inte kan göras, använder vi flera tekniker såsom ToStringFunc och filtrering av ogiltiga enum-värden.
+
+När vi renderar komponenten så kommer employee ha default värde av den anledning jag förklarat tidigare gällande hur enum fungerar. Vi använder MudBlazors inbyggda funktion ToStringFunc för att styra vad som visas i dropdownen. Genom att använda den kan vi dynamiskt returnera en tom sträng (string.Empty) när enum-värdet är InvalidState, vilket gör att label-texten ("Ange roll", "Ange avdelning", etc.) visas istället för ett ogiltigt värde. Dessutom filtrerar vi bort InvalidState i foreach-loopen så att det inte visas som ett alternativ i listan och därmed inte kan väljas av misstag.
