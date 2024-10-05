@@ -2,8 +2,8 @@
 title: "Skapa en generisk Enum select i Blazor"
 meta_title: ""
 description: "Generisk Enum select i Blazor"
-date: 2024-09-28
-image: "/images/clean-architecture-diagram"
+date: 2024-10-05
+image: "/images/inputform"
 categories: ["Blazor"]
 author: "Patric Bergkvist"
 tags: ["Blazor"]
@@ -151,7 +151,7 @@ public static string TranslateEnum(ProjectRole enumValue)
 ### Skapa formulär för att lägga till ny anställd
 Nu är det dags att skapa en ny sida för detta formulär. Vi börjar med att skapa en ny ***page***-komponent i Pages-mappen och namnge den AddEmployee.razor. Denna komponent kommer att innehålla vårt formulär för att registrera nya anställda. Formuläret kommer att se ut enligt följande:
 
---SCREENSHOT--
+![Inputform](/images/inputform.png)
 
 Och koden för den har vi här:
 

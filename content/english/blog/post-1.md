@@ -3,7 +3,7 @@ title: "Here we go"
 meta_title: ""
 description: "this is meta description"
 date: 2024-09-14
-image: "/images/image-placeholder.png"
+image: "/images/inputform.png"
 categories: [".NET", "Development"]
 author: "Patric Bergkvist"
 tags: ["Architecture"]
