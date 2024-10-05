@@ -7,7 +7,7 @@ image: "/images/clean-architecture-diagram"
 categories: ["Blazor"]
 author: "Patric Bergkvist"
 tags: ["Blazor"]
-draft: true
+draft: false
 ---
 
 Har du ett formulär som växer och innehåller många fält baserade på enums? Då kan det vara dags att refaktorera och optimera din kod genom att skapa en generisk dropdown-komponent för enums. Detta kan förenkla din kod avsevärt och eliminera duplicering.
@@ -119,7 +119,7 @@ Exempelvis:
 </MudSelect>
 ```
 
-och för att få namnet från [Display]-attributet kan du skapa en hjälpfunktion:
+och för att få namnet från [Display]-attributet kan du skapa en hjälpmetod:
 ```csharp
 private static string GetDisplayName(ProjectRole enumValue)
 {
@@ -180,31 +180,31 @@ Och koden för den har vi här:
                             <MudTextField T="string" @bind-Value="Employee.Lastname" Label="Efternamn"/>
                         </MudItem>
                     </MudGrid>
-                    <MudSelect T="ProjectRole" @bind-Value="Employee.Role" Label="Ange roll" ToStringFunc="GetAllWithoutDefaultValue">
+                    <MudSelect T="ProjectRole" @bind-Value="Employee.Role" Label="Ange roll" ToStringFunc="GetUserFriendlyTextWithoutDefaultValue">
                         @foreach (var role in Enum.GetValues(typeof(ProjectRole)).Cast<ProjectRole>().Where(e => !e.Equals(default(ProjectRole))))
                         {
                             <MudSelectItem Value="@role">@role</MudSelectItem>
                         }
                     </MudSelect>
-                    <MudSelect T="Department" @bind-Value="Employee.Department" Label="Ange avdelning" ToStringFunc="GetAllWithoutDefaultValue">
+                    <MudSelect T="Department" @bind-Value="Employee.Department" Label="Ange avdelning" ToStringFunc="GetUserFriendlyTextWithoutDefaultValue">
                         @foreach (var department in Enum.GetValues(typeof(Department)).Cast<Department>().Where(e => !e.Equals(default(Department))))
                         {
                             <MudSelectItem Value="@department">@department</MudSelectItem>
                         }
                     </MudSelect>
-                    <MudSelect T="EmployeeStatus" @bind-Value="Employee.Status" Label="Ange status" ToStringFunc="GetAllWithoutDefaultValue">
+                    <MudSelect T="EmployeeStatus" @bind-Value="Employee.Status" Label="Ange status" ToStringFunc="GetUserFriendlyTextWithoutDefaultValue">
                         @foreach (var status in Enum.GetValues(typeof(EmployeeStatus)).Cast<EmployeeStatus>().Where(e => !e.Equals(default(EmployeeStatus))))
                         {
                             <MudSelectItem Value="@status">@status</MudSelectItem>
                         }
                     </MudSelect>
-                    <MudSelect T="SeniorityLevel" @bind-Value="Employee.SeniorityLevel" Label="Ange senioritet" ToStringFunc="GetAllWithoutDefaultValue">
+                    <MudSelect T="SeniorityLevel" @bind-Value="Employee.SeniorityLevel" Label="Ange senioritet" ToStringFunc="GetUserFriendlyTextWithoutDefaultValue">
                         @foreach (var seniorityLevel in Enum.GetValues(typeof(SeniorityLevel)).Cast<SeniorityLevel>().Where(e => !e.Equals(default(SeniorityLevel))))
                         {
                             <MudSelectItem Value="@seniorityLevel">@seniorityLevel</MudSelectItem>
                         }
                     </MudSelect>
-                    <MudSelect T="Availability" @bind-Value="Employee.Availability" Label="Ange tillgänglighet" ToStringFunc="GetAllWithoutDefaultValue">
+                    <MudSelect T="Availability" @bind-Value="Employee.Availability" Label="Ange tillgänglighet" ToStringFunc="GetUserFriendlyTextWithoutDefaultValue">
                         @foreach (var workload in Enum.GetValues(typeof(Availability)).Cast<Availability>().Where(e => !e.Equals(default(Availability))))
                         {
                             <MudSelectItem Value="@workload">@workload</MudSelectItem>
@@ -225,19 +225,19 @@ Och koden för den har vi här:
 @code {
     private Employee Employee { get; set; } = new();
 
-    private static string GetAllWithoutDefaultValue(ProjectRole enumValue)
+    private static string GetUserFriendlyTextWithoutDefaultValue(ProjectRole enumValue)
         => enumValue == 0 ? string.Empty : GetDisplayName(enumValue);
 
-    private static string GetAllWithoutDefaultValue(Department enumValue)
+    private static string GetUserFriendlyTextWithoutDefaultValue(Department enumValue)
         => enumValue == 0 ? string.Empty : GetDisplayName(enumValue);
 
-    private static string GetAllWithoutDefaultValue(EmployeeStatus enumValue)
+    private static string GetUserFriendlyTextWithoutDefaultValue(EmployeeStatus enumValue)
         => enumValue == 0 ? string.Empty : GetDisplayName(enumValue);
 
-    private static string GetAllWithoutDefaultValue(SeniorityLevel enumValue)
+    private static string GetUserFriendlyTextWithoutDefaultValue(SeniorityLevel enumValue)
         => enumValue == 0 ? string.Empty : GetDisplayName(enumValue);
 
-    private static string GetAllWithoutDefaultValue(Availability enumValue)
+    private static string GetUserFriendlyTextWithoutDefaultValue(Availability enumValue)
         => enumValue == 0 ? string.Empty : GetDisplayName(enumValue);
 
     private static string GetDisplayName(ProjectRole enumValue)
@@ -302,6 +302,12 @@ Och koden för den har vi här:
 }
         
 ```
-I detta kodexempel används MudSelect-komponenter för att skapa dropdown-menyer som tillåter användaren att välja värden från de enum-typer vi definierat tidigare. För att förbättra användarupplevelsen och säkerställa att ogiltiga val inte kan göras, använder vi flera tekniker såsom ToStringFunc och filtrering av ogiltiga enum-värden.
 
-När vi renderar komponenten så kommer employee ha default värde av den anledning jag förklarat tidigare gällande hur enum fungerar. Vi använder MudBlazors inbyggda funktion ToStringFunc för att styra vad som visas i dropdownen. Genom att använda den kan vi dynamiskt returnera en tom sträng (string.Empty) när enum-värdet är InvalidState, vilket gör att label-texten ("Ange roll", "Ange avdelning", etc.) visas istället för ett ogiltigt värde. Dessutom filtrerar vi bort InvalidState i foreach-loopen så att det inte visas som ett alternativ i listan och därmed inte kan väljas av misstag.
+När vi renderar komponenten så kommer employee ha default värde av tidigare i inlägget nämnd anledning gällande hur enums fungerar. Vi använder MudBlazors inbyggda funktion ToStringFunc för att styra vad som visas i dropdownen. Genom att använda den kan vi dynamiskt returnera en tom sträng (string.Empty) när enum-värdet är InvalidState, vilket gör att label-texten ("Ange roll", "Ange avdelning", etc.) visas istället för InvalidState. Dessutom filtrerar vi bort InvalidState i foreach-loopen så att det inte visas som ett alternativ i listan och därmed inte kan väljas av misstag.
+
+### Refaktorering
+
+Nu när vi har en färdig komponent så kan vi se tydligt att det är väldigt mycket duplicering av kod, och visst kan man bryta ner varje metod som tar emot en generisk enum istället för varje specifik enum, men vi kan göra det ännu bättre och skapa en generisk enum-select att använda oss av. 
+
+Vi börjar med att skapa en ny mapp och döper den till Reuseable Components, i den skapar vi en ny komponent som vi döper till EnumSelect.razor
+
