@@ -562,6 +562,8 @@ Om vi går tillbaka till AddEmployee.razor och lägger in följande kod:
 
 Det jag vill notera här är att jag byggt ut den vänstra delen i kortet med att skriva ut vilket val man har gjort i varje dropdown för att demonstrera att tvåvägsbindningen fungerar som den ska. Detta är även anledningen till att GetDisplayName metoden ligger här. 
 
+![Inputform](/images/form1.png)
+
 ### Förklaring av EnumSelect-komponenten
 I vår AddEmployee.razor-fil har vi implementerat en ny generisk komponent, EnumSelect, som effektivt förenklar hanteringen av enums i vårt formulär. Istället för att skapa en separat MudSelect-komponent för varje enum (t.ex. ProjectRole, Department, EmployeeStatus, etc.) och därmed behöva loopa genom varje enum-värde, kan vi nu använda EnumSelect-komponenten för att göra denna process mer elegant och lättläst.
 
